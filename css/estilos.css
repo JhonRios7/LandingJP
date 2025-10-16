@@ -1,0 +1,827 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+/* Variables */
+:root {
+  --padding-container: 100px 0;
+  --color-title: #ededee;
+  --color-background: #f0f0f0;
+}
+
+/* General styling */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--color-background);
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 0;
+  overflow: hidden;
+}
+
+/* Hero Section */
+.hero--home {
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  max-height: 800px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centra el contenido en vertical */
+  color: #fff;
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("../images/fondo.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Header */
+.header {
+  width: 100%;
+  padding: 10px 0;
+  background: rgba(58, 58, 58, 0.8);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.nav__title {
+  font-weight: 300;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.nav__logo img {
+  margin-right: 10px;
+  height: 30px;
+}
+
+.nav__link {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+.nav__items {
+  list-style: none;
+}
+
+.nav__links {
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav__menu {
+  display: none;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.nav__img {
+  display: block;
+  width: 30px;
+}
+
+.nav__close {
+  display: none; /* Oculto por defecto */
+}
+
+/* Estilo para pantallas pequeñas */
+@media (max-width: 768px) {
+  /* Ocultamos los enlaces por defecto */
+  .nav__link {
+    position: fixed;
+    top: 20px;
+    right: -100%; /* Oculto completamente fuera de la vista */
+    width: 80%;
+    max-width: 300px;
+    height: auto; /* Ajustar al contenido */
+    background: rgba(58, 58, 58, 0.9);
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    border-radius: 10px;
+    transform: translateX(0); /* No usamos translate aquí */
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  /* Mostrar el menú cuando esté activo */
+  .nav__link--show {
+    right: 20px; /* Posición visible */
+  }
+
+  .nav__menu {
+    display: block; /* Mostramos el ícono del menú */
+    cursor: pointer;
+  }
+
+  .nav__close {
+    display: block; /* Mostramos el botón de cerrar */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    width: 20px;
+    z-index: 1001; /* Encima del menú */
+  }
+
+  .nav__items {
+    text-align: center;
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .nav__links {
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 10px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .nav__links:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+  }
+}
+
+/* Hero Container */
+.hero__container {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  text-align: center;
+}
+
+.hero__title {
+  font-size: 3rem;
+  margin: 50px 0 100px;
+}
+
+.hero__paragraph {
+  margin-bottom: 20px;
+}
+
+.cta {
+  background-color: #fff34b;
+  color: #0a0a0a;
+  text-decoration: none;
+  padding: 9px 10px;
+  border-radius: 15px;
+  width: fit-content;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .header {
+    padding: 15px 0; /* Menor padding para encajar mejor en móviles */
+  }
+  .hero__title {
+    font-size: 2rem;
+    margin: 30px 0 50px;
+  }
+
+  .hero__paragraph {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
+  .cta {
+    padding: 7px 8px; /* Reducir padding del botón */
+  }
+}
+
+/* Misión Section */
+.mision-vision__container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.mision-vision__subcontainer {
+  width: 38%; /* Tamaño para escritorio */
+  background-color: #fff34b;
+  padding: 40px;
+  border-radius: 8px;
+  margin-bottom: 17px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mision-vision__item p {
+  line-height: 1.6;
+  color: #000000;
+}
+
+.title {
+  text-align: center;
+  margin: 10px 0 80px;
+  width: 100%;
+  color: #3f3f3f;
+  font-size: 46px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .mision-vision__subcontainer {
+    width: 100%; /* Ocupa toda la pantalla en móviles */
+    padding: 20px; /* Menos padding en pantallas pequeñas */
+  }
+
+  .title {
+    font-size: 32px; /* Reducir el tamaño del título en móviles */
+    margin: 10px 0 40px;
+  }
+}
+
+/* Acerca de Section */
+.about {
+  text-align: center;
+  color: #000;
+  padding: 2rem 1rem;
+}
+
+.subtitle {
+  color: #000;
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+
+.about__main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.about__paragraph {
+  line-height: 1.7;
+  margin: 0 auto;
+  width: 90%;
+  padding-bottom: 2rem;
+}
+
+.about__icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1 1 260px;
+  min-width: 260px;
+  max-width: 300px;
+}
+
+.about__icon {
+  width: 50px;
+  margin-bottom: 1rem;
+}
+
+.about__title {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.about__paragraph-small {
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .about__main {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .about__icons {
+    width: 100%;
+    max-width: 90%;
+    padding: 1rem;
+  }
+
+  .about__title {
+    font-size: 1rem;
+  }
+
+  .about__icon {
+    width: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about__icons {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Sección Proyectos en la landing page */
+.projects {
+  text-align: center;
+  padding: 50px 0;
+  background-color: #d9dee2;
+}
+
+.projects__title {
+  font-size: 2.5rem;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.projects__description {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.project__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project__card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.project__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.project__location {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* === Ajuste para los videos dentro de las tarjetas de proyectos === */
+.project__card video.project__media,
+.project__card video.project__image {
+  width: 100%;
+  height: 200px;           /* Igual que las imágenes */
+  object-fit: cover;       /* Evita deformaciones */
+  display: block;
+  border: none;
+  border-radius: 0;        /* evita bordes adicionales */
+  background: #000;        /* fondo negro mientras carga */
+}
+
+/* Botón para ver todos los proyectos */
+.projects__link {
+  display: inline-block;
+  margin-top: 20px;
+  background-color: #f5e722;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.projects__link:hover {
+  background-color: #17a45a;
+  color: #fff;
+}
+
+/* Ajustes Responsivos */
+@media (max-width: 768px) {
+  .projects__title {
+    font-size: 2rem;
+  }
+
+  .projects__description {
+    font-size: 1rem;
+  }
+
+  .project__image {
+    height: 180px;
+  }
+
+  .projects__grid {
+    gap: 1rem;
+  }
+
+  .projects__link {
+    padding: 8px 16px;
+  }
+}
+
+/* Contenedor general de la galería */
+.gallery {
+  margin: 40px auto;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Título de la galería */
+.container__title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Estilos para el contenedor del carrusel */
+.carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Contenedor de la imagen grande */
+.carousel__slides {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.carousel__slide {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.carousel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Mostrar la imagen seleccionada */
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked ~ .carousel__slides .carousel__slide {
+  display: block;
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Estilos para el carrusel de miniaturas */
+.carousel__thumbnails {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+  max-width: 100%;
+  justify-content: center;
+}
+
+.carousel__thumbnails label {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.carousel__thumbnails img {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.carousel__thumbnails label:hover img {
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Efectos responsivos */
+@media (max-width: 768px) {
+  .carousel__slides {
+    max-width: 90%;
+  }
+  .carousel__thumbnails img {
+    width: 80px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel__slides {
+    aspect-ratio: 4 / 3;
+  }
+  .carousel__thumbnails img {
+    width: 60px;
+    height: 45px;
+  }
+}
+
+/* Contact Section */
+#contact {
+  padding: 50px 20px;
+  background-color: #ddd9d9;
+}
+
+/* Contenido de la sección de contacto */
+.contact__content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px; /* Añadimos un gap para separación entre elementos */
+}
+
+.contact__form,
+.contact__info {
+  flex: 1;
+  min-width: 300px; /* Reducimos el min-width para mejor adaptación */
+  max-width: 100%;
+  margin: 20px;
+}
+
+/* Formulario de contacto */
+.contact__form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.form__group {
+  margin-bottom: 15px;
+}
+
+.form__group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form__group input,
+.form__group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.form__group textarea {
+  resize: vertical;
+}
+
+.btn {
+  background-color: #fff34b;
+  color: #050505;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #000000;
+  color: #3b3a3a;
+}
+
+/* Información de contacto */
+.contact__info h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.contact__map iframe {
+  width: 100%;
+  height: 400px;
+  border: 0;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+/* ================================= */
+/* Media Queries para Responsividad */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 992px) {
+  .contact__content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact__form,
+  .contact__info {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px 0;
+  }
+
+  .contact__map iframe {
+    height: 350px;
+  }
+}
+
+/* Dispositivos móviles grandes (horizontal y vertical) */
+@media (max-width: 768px) {
+  .form__group input,
+  .form__group textarea {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+  
+  .contact__map iframe {
+    height: 300px;
+  }
+}
+
+/* Dispositivos móviles pequeños */
+@media (max-width: 480px) {
+  #contact {
+    padding: 30px 10px;
+  }
+
+  .contact__form,
+  .contact__info {
+    padding: 15px;
+  }
+
+  .form__group input,
+  .form__group textarea {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .contact__map iframe {
+    height: 250px;
+  }
+}
+
+/* Custom Whatsapp Button */
+button.wh-ap-btn {
+  outline: none;
+  width: 60px;
+  height: 60px;
+  border: 0;
+  background-color: #2ecc71;
+  padding: 0;
+  border-radius: 100% !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: opacity 0.3s, background 0.3s, box-shadow 0.3s;
+}
+
+button.wh-ap-btn::after {
+  content: "";
+  background-image: url("https://cdn.shopify.com/s/files/1/0311/9398/9260/files/whatsapp_1.png?v=1661459275");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 48%;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 1;
+}
+
+button.wh-ap-btn:hover {
+  background-color: #20bf6b;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.wh-api {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1;
+}
+
+/* Social Icons */
+.social__icons {
+  margin-top: 20px;
+}
+
+.social__icons a {
+  margin: 0 10px;
+  display: inline-block;
+}
+
+.social__icons img {
+  width: 30px;
+  height: 30px;
+  transition: transform 0.3s;
+}
+
+.social__icons a:hover img {
+  transform: scale(1.2);
+}
+
+/* Scroll to Top */
+#site-scroll {
+  bottom: 100px;
+  background-color: #3a3a3a80;
+  color: #000;
+  border: 1px solid #000;
+}
+/* Ajuste para la nueva imagen en Contacto */
+.contact__image {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; /* Centra la imagen horizontalmente */
+}
+
+.contact__image img {
+  max-width: 100%; /* Se ajusta al ancho del contenedor */
+  height: auto;
+  border-radius: 10px; /* Opcional: añade bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para un efecto profesional */
+}
+
+@media (max-width: 600px) {
+  .hero__title {
+    font-size: 2rem;
+  }
+
+  .hero__paragraph {
+    font-size: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.8rem;
+  }
+
+  .footer__title {
+    margin-bottom: 15px;
+  }
+
+  .nav--footer {
+    padding-bottom: 60px;
+  }
+
+  .footer__inputs {
+    flex-wrap: wrap;
+  }
+
+  .footer__input {
+    flex-basis: 100%;
+    margin: 0 0 16px;
+  }
+
+  .footer__submit {
+    margin-right: auto;
+  }
+}
