@@ -161,36 +161,81 @@ document.addEventListener('DOMContentLoaded', function () {
     showSlide(); // Cargar la primera imagen
   }
 
-  // Inicializa EmailJS con la API Key Pública
-  emailjs.init('rT99C_VVaJQI4966A'); //API Key Pública de EmailJS
+  // Inicializar EmailJS con configuración centralizada (SDK v4)
+  if (typeof EMAILJS_CONFIG !== 'undefined' && EMAILJS_CONFIG.PUBLIC_KEY) {
+    emailjs.init({
+      publicKey: EMAILJS_CONFIG.PUBLIC_KEY
+    });
+  } else {
+    console.warn("EmailJS no está configurado. Por favor define EMAILJS_CONFIG en js/config.js.");
+  }
 
-  // Maneja el envío del formulario
+  // Manejar el envío del formulario de contacto
   const contactForm = document.getElementById('contactForm');
-  contactForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+  if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-    // Validación de formulario
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const message = document.getElementById('message').value.trim();
+      // Validación de campos
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
 
-    if (!name || !email || !message) {
-      alert('Por favor, completa todos los campos antes de enviar.');
-      return;
-    }
+      if (!name || !email || !message) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos Incompletos',
+          text: 'Por favor, completa todos los campos antes de enviar tu mensaje.',
+          confirmButtonColor: '#2091F9'
+        });
+        return;
+      }
 
-    // Envía los datos a través de EmailJS
-    emailjs.send('service_7n2mmdj', 'template_7cwu7wm', {
-      name: name,
-      email: email,
-      message: message,
-    })
+      if (typeof EMAILJS_CONFIG === 'undefined' || !EMAILJS_CONFIG.PUBLIC_KEY || EMAILJS_CONFIG.PUBLIC_KEY.includes("TU_EMAILJS")) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de Configuración',
+          text: 'Las credenciales de EmailJS no están configuradas en js/config.js.',
+          confirmButtonColor: '#ef4444'
+        });
+        return;
+      }
+
+      // Estado de carga en el botón
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Enviando mensaje...";
+
+      // Enviar el correo usando EmailJS
+      emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, {
+        name: name,
+        email: email,
+        message: message,
+      })
       .then(() => {
-        alert('Mensaje enviado correctamente');
+        Swal.fire({
+          icon: 'success',
+          title: '¡Mensaje Enviado!',
+          text: 'Tu solicitud de cotización se ha enviado con éxito. Nos pondremos en contacto contigo lo antes posible.',
+          confirmButtonColor: '#2091F9'
+        });
         contactForm.reset();
       })
       .catch((error) => {
-        alert('Ocurrió un error al enviar el mensaje: ' + error);
+        console.error("Error de EmailJS:", error);
+        const errorMsg = error ? (error.text || error.message || JSON.stringify(error)) : 'Error desconocido';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al Enviar',
+          text: 'Ocurrió un error al enviar: ' + errorMsg,
+          confirmButtonColor: '#ef4444'
+        });
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
       });
-  });
+    });
+  }
 });
