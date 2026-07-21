@@ -645,45 +645,44 @@
               <label for="proj-status">Estado</label>
               <input type="text" id="proj-status" class="form-control" placeholder="Ej: Completado" required>
             </div>
-            <div class="form-group">
-              <label for="proj-media-type">Tipo de Multimedia</label>
-              <select id="proj-media-type" class="form-control" onchange="togglePosterField()">
-                <option value="image">Imagen</option>
-                <option value="video">Video</option>
-              </select>
+            <div class="form-group" style="display: flex; align-items: flex-end; height: 100%; margin-bottom: 20px; box-sizing: border-box; padding-bottom: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="proj-active" style="width: auto; margin: 0;" checked>
+                <label for="proj-active" style="margin: 0; cursor: pointer; font-weight: 500; font-size: 0.9rem;">Habilitar proyecto (visible en la web)</label>
+              </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <label>Archivo de Multimedia (Sube imagen/video)</label>
-            <div class="file-input-container" onclick="document.getElementById('proj-file').click()">
-              <p id="proj-file-status">Haz clic para seleccionar o arrastra el archivo aquí</p>
-              <input type="file" id="proj-file" accept="image/*,video/*" onchange="handleFileSelect(this, 'proj-file-status', 'proj-img-preview')">
-              <img id="proj-img-preview" class="file-preview">
+          <!-- Galería Multimedia del Proyecto -->
+          <div class="form-group" style="border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; margin-bottom: 20px; background-color: #fafafa;">
+            <label style="font-weight: 600; margin-bottom: 15px; display: block; color: var(--text-dark);">Galería del Proyecto (Imágenes y Videos)</label>
+            
+            <!-- Grid de miniaturas -->
+            <div id="proj-gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 15px; margin-bottom: 20px;">
+              <!-- Se inyecta visualmente con JS -->
             </div>
-            <p style="font-size:0.8rem;color:var(--text-muted);margin:5px 0 0 0;">O si prefieres, ingresa la URL directamente abajo:</p>
-            <input type="text" id="proj-media-src" class="form-control" placeholder="Ej: images/proyecto1.jpg">
-          </div>
 
-          <div class="form-group" id="poster-group" style="display:none;">
-            <label>Poster del Video (Miniatura estática)</label>
-            <div class="file-input-container" onclick="document.getElementById('proj-poster-file').click()">
-              <p id="proj-poster-status">Seleccionar imagen para miniatura</p>
-              <input type="file" id="proj-poster-file" accept="image/*" onchange="handleFileSelect(this, 'proj-poster-status', 'proj-poster-preview')">
-              <img id="proj-poster-preview" class="file-preview">
+            <!-- Botones de subida -->
+            <div style="display: flex; gap: 10px;">
+              <button type="button" class="btn-action" style="flex: 1; border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; cursor: pointer;" onclick="document.getElementById('proj-add-img-input').click()">
+                <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                Añadir Imagen
+              </button>
+              <input type="file" id="proj-add-img-input" accept="image/*" style="display: none;" onchange="handleProjectGalleryUpload(this, 'image')">
+
+              <button type="button" class="btn-action" style="flex: 1; border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; cursor: pointer;" onclick="document.getElementById('proj-add-video-input').click()">
+                <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" /></svg>
+                Añadir Video
+              </button>
+              <input type="file" id="proj-add-video-input" accept="video/*" style="display: none;" onchange="handleProjectGalleryUpload(this, 'video')">
             </div>
-            <p style="font-size:0.8rem;color:var(--text-muted);margin:5px 0 0 0;">O ingresa la URL de miniatura directamente:</p>
-            <input type="text" id="proj-poster" class="form-control" placeholder="Ej: images/MovTrafo.jpeg">
+            
+            <p style="font-size:0.8rem; color:var(--text-muted); margin:10px 0 0 0; text-align: center;">Sube fotos o videos para el carrusel de este proyecto.</p>
           </div>
 
           <div class="form-group">
             <label for="proj-description">Descripción Detallada</label>
             <textarea id="proj-description" class="form-control" rows="4" required></textarea>
-          </div>
-
-          <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px;">
-            <input type="checkbox" id="proj-active" style="width: auto; margin: 0;" checked>
-            <label for="proj-active" style="margin: 0; cursor: pointer; font-weight: 500; font-size: 0.9rem;">Habilitar proyecto (hacerlo visible públicamente en la web)</label>
           </div>
 
           <div class="form-actions">
@@ -739,6 +738,7 @@
 
   <script>
     let globalSession = null;
+    let currentProjectMediaGallery = [];
 
     document.addEventListener('DOMContentLoaded', async () => {
       if (!supabase) {
@@ -905,51 +905,13 @@
       }
     }
 
-    function togglePosterField() {
-      const type = document.getElementById('proj-media-type').value;
-      const group = document.getElementById('poster-group');
-      if (type === 'video') {
-        group.style.display = 'block';
-      } else {
-        group.style.display = 'none';
-      }
-    }
-
-    function handleFileSelect(input, statusId, previewId) {
-      const file = input.files[0];
-      const statusText = document.getElementById(statusId);
-      const preview = document.getElementById(previewId);
-
-      if (file) {
-        statusText.textContent = `Archivo seleccionado: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
-        
-        // Mostrar preview si es imagen
-        if (file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-          };
-          reader.readAsDataURL(file);
-        } else {
-          preview.style.display = 'none';
-        }
-      } else {
-        statusText.textContent = "Haz clic para seleccionar o arrastra el archivo aquí";
-        preview.style.display = 'none';
-      }
-    }
-
     function openProjectModal(isEdit = false) {
       document.getElementById('project-modal').style.display = 'flex';
       const form = document.getElementById('project-form');
       form.reset();
       
-      // Limpiar previews
-      document.getElementById('proj-img-preview').style.display = 'none';
-      document.getElementById('proj-poster-preview').style.display = 'none';
-      document.getElementById('proj-file-status').textContent = "Haz clic para seleccionar o arrastra el archivo aquí";
-      document.getElementById('proj-poster-status').textContent = "Seleccionar imagen para miniatura";
+      currentProjectMediaGallery = [];
+      renderProjectGalleryUI();
 
       if (!isEdit) {
         document.getElementById('modal-project-title').textContent = "Nuevo Proyecto";
@@ -957,7 +919,6 @@
         document.getElementById('proj-id').disabled = false;
         document.getElementById('proj-active').checked = true;
       }
-      togglePosterField();
     }
 
     function closeProjectModal() {
@@ -968,7 +929,7 @@
       openProjectModal(true);
       document.getElementById('modal-project-title').textContent = "Editar Proyecto";
       document.getElementById('project-db-mode').value = "edit";
-      document.getElementById('proj-id').disabled = true; // No permitir cambiar la clave primaria
+      document.getElementById('proj-id').disabled = true;
 
       try {
         const { data: p, error } = await supabase
@@ -986,13 +947,25 @@
         document.getElementById('proj-service').value = p.service;
         document.getElementById('proj-voltage').value = p.voltage;
         document.getElementById('proj-status').value = p.status;
-        document.getElementById('proj-media-type').value = p.media_type;
-        document.getElementById('proj-media-src').value = p.media_src;
-        document.getElementById('proj-poster').value = p.poster || '';
         document.getElementById('proj-description').value = p.description;
         document.getElementById('proj-active').checked = p.active !== false;
 
-        togglePosterField();
+        // Cargar galería
+        currentProjectMediaGallery = p.media_gallery;
+        if (!currentProjectMediaGallery || !Array.isArray(currentProjectMediaGallery) || currentProjectMediaGallery.length === 0) {
+          // Fallback para proyectos antiguos migrados sin galería de array
+          if (p.media_src) {
+            currentProjectMediaGallery = [{
+              type: p.media_type || 'image',
+              src: p.media_src,
+              poster: p.poster || null
+            }];
+          } else {
+            currentProjectMediaGallery = [];
+          }
+        }
+        renderProjectGalleryUI();
+
       } catch (err) {
         Swal.fire({
           icon: 'error',
@@ -1004,8 +977,113 @@
       }
     }
 
+    function renderProjectGalleryUI() {
+      const grid = document.getElementById('proj-gallery-grid');
+      grid.innerHTML = '';
+
+      if (currentProjectMediaGallery.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 10px 0;">La galería está vacía. Añade imágenes o videos.</p>';
+        return;
+      }
+
+      currentProjectMediaGallery.forEach((item, index) => {
+        const container = document.createElement('div');
+        container.style.position = 'relative';
+        container.style.width = '100%';
+        container.style.height = '90px';
+        container.style.borderRadius = '6px';
+        container.style.overflow = 'hidden';
+        container.style.border = '1px solid var(--border-color)';
+
+        let mediaHtml = '';
+        if (item.type === 'video') {
+          mediaHtml = `
+            <div style="width:100%; height:100%; position:relative; background:#000;">
+              <video style="width:100%; height:100%; object-fit:cover;" src="${item.src}" poster="${item.poster || ''}"></video>
+              <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-size:10px; background:rgba(0,0,0,0.6); border-radius:50%; padding:2px 4px; pointer-events:none;">▶</span>
+            </div>
+          `;
+        } else {
+          mediaHtml = `<img style="width:100%; height:100%; object-fit:cover;" src="${item.src}" alt="img">`;
+        }
+
+        container.innerHTML = `
+          ${mediaHtml}
+          <button type="button" onclick="removeProjectGalleryItem(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); color: white; border: none; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,0.3);" title="Quitar archivo">×</button>
+        `;
+        grid.appendChild(container);
+      });
+    }
+
+    function removeProjectGalleryItem(index) {
+      currentProjectMediaGallery.splice(index, 1);
+      renderProjectGalleryUI();
+    }
+
+    async function handleProjectGalleryUpload(input, type) {
+      const file = input.files[0];
+      if (!file) return;
+
+      Swal.fire({
+        title: 'Subiendo archivo...',
+        text: 'Por favor espera a que la subida finalice.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      try {
+        const publicUrl = await uploadToStorage(file, 'projects');
+        let posterUrl = null;
+
+        if (type === 'video') {
+          // Preguntar por miniatura/poster opcional usando Swal.fire
+          const { value: posterFile } = await Swal.fire({
+            title: 'Miniatura de Video',
+            text: 'Selecciona una imagen de poster/miniatura para este video (opcional)',
+            input: 'file',
+            inputAttributes: {
+              accept: 'image/*'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Subir Miniatura',
+            cancelButtonText: 'Omitir'
+          });
+
+          if (posterFile) {
+            Swal.fire({
+              title: 'Subiendo miniatura...',
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+              }
+            });
+            posterUrl = await uploadToStorage(posterFile, 'posters');
+          }
+        }
+
+        currentProjectMediaGallery.push({
+          type: type,
+          src: publicUrl,
+          poster: posterUrl
+        });
+
+        renderProjectGalleryUI();
+        Swal.close();
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de Carga',
+          text: 'Ocurrió un error al subir el archivo: ' + err.message,
+          confirmButtonColor: '#ef4444'
+        });
+      } finally {
+        input.value = ''; // Limpiar selector
+      }
+    }
+
     async function uploadToStorage(file, folder = 'media') {
-      // Intentar subir al bucket 'landing-media'
       const fileExt = file.name.split('.').pop();
       const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
       
@@ -1014,11 +1092,10 @@
         .upload(fileName, file);
 
       if (error) {
-        console.warn("Storage upload failed. Posiblemente no tienes configurado el Storage Bucket con políticas RLS de inserción pública/autenticada: ", error);
+        console.warn("Storage upload failed: ", error);
         throw error;
       }
 
-      // Retornar la URL pública del archivo cargado
       const { data: { publicUrl } } = supabase.storage
         .from('landing-media')
         .getPublicUrl(fileName);
@@ -1035,36 +1112,20 @@
       const service = document.getElementById('proj-service').value.trim();
       const voltage = document.getElementById('proj-voltage').value.trim();
       const status = document.getElementById('proj-status').value.trim();
-      const media_type = document.getElementById('proj-media-type').value;
       const description = document.getElementById('proj-description').value.trim();
       const active = document.getElementById('proj-active').checked;
-      
-      let media_src = document.getElementById('proj-media-src').value.trim();
-      let poster = document.getElementById('proj-poster').value.trim() || null;
 
-      // Subir archivos al storage si se seleccionaron
-      const fileInput = document.getElementById('proj-file');
-      const posterInput = document.getElementById('proj-poster-file');
+      if (currentProjectMediaGallery.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Galería Vacía',
+          text: 'Debes añadir al menos una imagen o video a la galería del proyecto.',
+          confirmButtonColor: '#2091F9'
+        });
+        return;
+      }
 
       try {
-        if (fileInput.files.length > 0) {
-          media_src = await uploadToStorage(fileInput.files[0], 'projects');
-        }
-
-        if (media_type === 'video' && posterInput.files.length > 0) {
-          poster = await uploadToStorage(posterInput.files[0], 'posters');
-        }
-
-        if (!media_src) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Campo Obligatorio',
-            text: 'Debes seleccionar un archivo o proveer una URL de recurso.',
-            confirmButtonColor: '#2091F9'
-          });
-          return;
-        }
-
         const projectPayload = {
           title,
           location,
@@ -1072,11 +1133,13 @@
           service,
           voltage,
           status,
-          media_type,
-          media_src,
-          poster,
           description,
-          active
+          active,
+          media_gallery: currentProjectMediaGallery,
+          // Compatibilidad: poblar los campos principales con el primer item de la galería
+          media_type: currentProjectMediaGallery[0].type,
+          media_src: currentProjectMediaGallery[0].src,
+          poster: currentProjectMediaGallery[0].poster || null
         };
 
         if (mode === 'create') {
@@ -1108,7 +1171,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Error al Guardar',
-          text: err.message + '. Asegúrate de que el bucket de storage "landing-media" exista en Supabase.',
+          text: err.message + '. Asegúrate de que la estructura de tu tabla contenga el campo "media_gallery".',
           confirmButtonColor: '#ef4444'
         });
       }
