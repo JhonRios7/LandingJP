@@ -566,6 +566,7 @@
                 <th>Tensión</th>
                 <th>Cliente</th>
                 <th>Estado</th>
+                <th>Visibilidad</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -680,6 +681,11 @@
             <textarea id="proj-description" class="form-control" rows="4" required></textarea>
           </div>
 
+          <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px;">
+            <input type="checkbox" id="proj-active" style="width: auto; margin: 0;" checked>
+            <label for="proj-active" style="margin: 0; cursor: pointer; font-weight: 500; font-size: 0.9rem;">Habilitar proyecto (hacerlo visible públicamente en la web)</label>
+          </div>
+
           <div class="form-actions">
             <button type="button" class="btn-secondary" onclick="closeProjectModal()">Cancelar</button>
             <button type="submit" class="btn-submit" style="width:auto;margin:0;">Guardar Proyecto</button>
@@ -725,6 +731,8 @@
 
   <!-- SDK de Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Configuración y Cliente de Supabase -->
   <script src="js/config.js"></script>
   <script src="js/supabase-client.js"></script>
@@ -734,7 +742,12 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       if (!supabase) {
-        alert("Supabase no está configurado. Edita js/config.js para poder operar el panel.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Configuración Requerida',
+          text: 'Supabase no está configurado. Edita js/config.js para poder operar el panel.',
+          confirmButtonColor: '#2091F9'
+        });
         return;
       }
 
@@ -774,7 +787,12 @@
         });
 
         if (error) {
-          alert("Error de autenticación: " + error.message);
+          Swal.fire({
+            icon: 'error',
+            title: 'Acceso Denegado',
+            text: 'Error de autenticación: ' + error.message,
+            confirmButtonColor: '#ef4444'
+          });
           btn.disabled = false;
           btn.textContent = "Ingresar al Dashboard";
         }
@@ -850,18 +868,33 @@
             mediaHtml = `<img src="${p.media_src}" alt="media" class="project-row-img" onerror="this.src='images/MovTrafo.jpeg'">`;
           }
 
+          const visibilityHtml = p.active !== false
+            ? `<span class="badge" style="background-color: #d1fae5; color: #065f46;">Activo</span>`
+            : `<span class="badge" style="background-color: #f3f4f6; color: #374151;">Inhabilitado</span>`;
+
+          const actionBtnHtml = p.active !== false
+            ? `<button class="btn-action btn-delete" style="color: #64748b; border-color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center; padding: 6px;" title="Inhabilitar Proyecto" onclick="toggleProjectStatus('${p.id}', true)">
+                <svg style="width:18px;height:18px" viewBox="0 0 24 24"><path fill="currentColor" d="M11.83,9L15,12.17C15,12.11 15,12.06 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.23,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3,8.38 1.63,10.06 1,12C2.73,16.39 7,19.5 12,19.5C13.79,19.5 15.46,19.1 16.97,18.39L17.43,18.85L19.73,21.15L21,19.88L3.27,2.12L2,4.27M12,7A5,5 0 0,1 14.8,8.2L16.62,10.02C16.86,10.63 17,11.3 17,12C17,12.78 16.8,13.53 16.47,14.2L18.47,16.2C19.82,15 20.91,13.43 21.61,11.61C19.92,7.39 15.77,4.5 11,4.5C9.6,4.5 8.27,4.74 7,5.18L8.83,7C9.79,6.56 10.87,6.33 12,7M12,4.5L12,4.5Z" /></svg>
+               </button>`
+            : `<button class="btn-action" style="color: var(--success); border-color: rgba(16, 185, 129, 0.2); display: inline-flex; align-items: center; justify-content: center; padding: 6px;" title="Habilitar Proyecto" onclick="toggleProjectStatus('${p.id}', false)">
+                <svg style="width:18px;height:18px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17Z" /></svg>
+               </button>`;
+
           tr.innerHTML = `
             <td>${mediaHtml}</td>
-            <td style="font-weight:600;">${p.title}</td>
-            <td>${p.location}</td>
+            <td style="font-weight:600; ${p.active === false ? 'opacity: 0.5;' : ''}">${p.title}</td>
+            <td style="${p.active === false ? 'opacity: 0.5;' : ''}">${p.location}</td>
             <td><span class="badge badge-service">${p.service}</span></td>
             <td><span class="badge badge-voltage">${p.voltage}</span></td>
-            <td>${p.client}</td>
-            <td>${p.status}</td>
+            <td style="${p.active === false ? 'opacity: 0.5;' : ''}">${p.client}</td>
+            <td style="${p.active === false ? 'opacity: 0.5;' : ''}">${p.status}</td>
+            <td>${visibilityHtml}</td>
             <td>
               <div class="actions-cell">
-                <button class="btn-action btn-edit" onclick="editProject('${p.id}')">Editar</button>
-                <button class="btn-action btn-delete" onclick="deleteProject('${p.id}')">Eliminar</button>
+                <button class="btn-action btn-edit" style="color: var(--primary); border-color: rgba(32, 145, 249, 0.2); display: inline-flex; align-items: center; justify-content: center; padding: 6px;" title="Editar Proyecto" onclick="editProject('${p.id}')">
+                  <svg style="width:18px;height:18px" viewBox="0 0 24 24"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.07,6.19L3,17.25Z" /></svg>
+                </button>
+                ${actionBtnHtml}
               </div>
             </td>
           `;
@@ -922,6 +955,7 @@
         document.getElementById('modal-project-title').textContent = "Nuevo Proyecto";
         document.getElementById('project-db-mode').value = "create";
         document.getElementById('proj-id').disabled = false;
+        document.getElementById('proj-active').checked = true;
       }
       togglePosterField();
     }
@@ -956,10 +990,16 @@
         document.getElementById('proj-media-src').value = p.media_src;
         document.getElementById('proj-poster').value = p.poster || '';
         document.getElementById('proj-description').value = p.description;
+        document.getElementById('proj-active').checked = p.active !== false;
 
         togglePosterField();
       } catch (err) {
-        alert("Error cargando detalles del proyecto: " + err.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error cargando detalles del proyecto: ' + err.message,
+          confirmButtonColor: '#ef4444'
+        });
         closeProjectModal();
       }
     }
@@ -997,6 +1037,7 @@
       const status = document.getElementById('proj-status').value.trim();
       const media_type = document.getElementById('proj-media-type').value;
       const description = document.getElementById('proj-description').value.trim();
+      const active = document.getElementById('proj-active').checked;
       
       let media_src = document.getElementById('proj-media-src').value.trim();
       let poster = document.getElementById('proj-poster').value.trim() || null;
@@ -1015,7 +1056,12 @@
         }
 
         if (!media_src) {
-          alert("Debes seleccionar un archivo o proveer una URL de recurso.");
+          Swal.fire({
+            icon: 'warning',
+            title: 'Campo Obligatorio',
+            text: 'Debes seleccionar un archivo o proveer una URL de recurso.',
+            confirmButtonColor: '#2091F9'
+          });
           return;
         }
 
@@ -1029,42 +1075,87 @@
           media_type,
           media_src,
           poster,
-          description
+          description,
+          active
         };
 
         if (mode === 'create') {
           projectPayload.id = id;
           const { error } = await supabase.from('proyectos').insert([projectPayload]);
           if (error) throw error;
-          alert("Proyecto creado con éxito.");
+          Swal.fire({
+            icon: 'success',
+            title: 'Creado',
+            text: 'Proyecto creado con éxito.',
+            timer: 2000,
+            showConfirmButton: false
+          });
         } else {
           const { error } = await supabase.from('proyectos').update(projectPayload).eq('id', id);
           if (error) throw error;
-          alert("Proyecto actualizado con éxito.");
+          Swal.fire({
+            icon: 'success',
+            title: 'Actualizado',
+            text: 'Proyecto actualizado con éxito.',
+            timer: 2000,
+            showConfirmButton: false
+          });
         }
 
         closeProjectModal();
         loadProjects();
       } catch (err) {
-        alert("Error al guardar: " + err.message + "\n\nNota: Asegúrate de que el bucket de storage 'landing-media' exista en Supabase.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al Guardar',
+          text: err.message + '. Asegúrate de que el bucket de storage "landing-media" exista en Supabase.',
+          confirmButtonColor: '#ef4444'
+        });
       }
     }
 
-    async function deleteProject(id) {
-      if (!confirm("¿Estás seguro de que deseas eliminar este proyecto de manera permanente?")) return;
+    async function toggleProjectStatus(id, currentActive) {
+      const newActive = !currentActive;
+      const confirmTitle = newActive ? "¿Habilitar Proyecto?" : "¿Inhabilitar Proyecto?";
+      const confirmText = newActive
+        ? "Este proyecto volverá a ser visible públicamente en la Landing Page."
+        : "Este proyecto se ocultará temporalmente de la Landing Page.";
+
+      const result = await Swal.fire({
+        title: confirmTitle,
+        text: confirmText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: newActive ? '#10b981' : '#64748b',
+        cancelButtonColor: '#e2e8f0',
+        confirmButtonText: newActive ? 'Sí, habilitar' : 'Sí, inhabilitar',
+        cancelButtonText: 'Cancelar'
+      });
+
+      if (!result.isConfirmed) return;
 
       try {
         const { error } = await supabase
           .from('proyectos')
-          .delete()
+          .update({ active: newActive })
           .eq('id', id);
 
         if (error) throw error;
 
-        alert("Proyecto eliminado.");
+        Swal.fire({
+          icon: 'success',
+          title: newActive ? 'Proyecto Habilitado' : 'Proyecto Inhabilitado',
+          timer: 1500,
+          showConfirmButton: false
+        });
         loadProjects();
       } catch (err) {
-        alert("Error al eliminar: " + err.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al cambiar el estado del proyecto: ' + err.message,
+          confirmButtonColor: '#ef4444'
+        });
       }
     }
 
@@ -1127,7 +1218,12 @@
         }
 
         if (!img_src) {
-          alert("Debes seleccionar una imagen para subir o especificar su URL.");
+          Swal.fire({
+            icon: 'warning',
+            title: 'Imagen Requerida',
+            text: 'Debes seleccionar una imagen para subir o especificar su URL.',
+            confirmButtonColor: '#2091F9'
+          });
           return;
         }
 
@@ -1137,16 +1233,38 @@
 
         if (error) throw error;
 
-        alert("Imagen subida a la galería con éxito.");
+        Swal.fire({
+          icon: 'success',
+          title: 'Imagen Subida',
+          text: 'Imagen subida a la galería con éxito.',
+          timer: 2000,
+          showConfirmButton: false
+        });
         closeGalleryModal();
         loadGallery();
       } catch (err) {
-        alert("Error al subir a la galería: " + err.message + "\n\nNota: Asegúrate de que el bucket de storage 'landing-media' exista.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al Subir',
+          text: err.message + '. Asegúrate de que el bucket de storage "landing-media" exista.',
+          confirmButtonColor: '#ef4444'
+        });
       }
     }
 
     async function deleteGalleryItem(id) {
-      if (!confirm("¿Estás seguro de que deseas eliminar esta foto del carrusel?")) return;
+      const result = await Swal.fire({
+        title: '¿Eliminar Imagen?',
+        text: "Esta foto se borrará de forma permanente de tu galería de carrusel.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#e2e8f0',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      });
+
+      if (!result.isConfirmed) return;
 
       try {
         const { error } = await supabase
@@ -1156,10 +1274,21 @@
 
         if (error) throw error;
 
-        alert("Imagen eliminada de la galería.");
+        Swal.fire({
+          icon: 'success',
+          title: 'Eliminada',
+          text: 'Imagen eliminada de la galería.',
+          timer: 1500,
+          showConfirmButton: false
+        });
         loadGallery();
       } catch (err) {
-        alert("Error al eliminar: " + err.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al eliminar: ' + err.message,
+          confirmButtonColor: '#ef4444'
+        });
       }
     }
   </script>

@@ -223,6 +223,7 @@
           .from('proyectos')
           .select('*')
           .eq('id', projectId)
+          .eq('active', true)
           .single();
 
         if (error || !project) {
@@ -307,6 +308,7 @@
         const { data: todosProyectos, error } = await supabase
           .from('proyectos')
           .select('*')
+          .eq('active', true)
           .neq('id', currentId);
 
         if (error || !todosProyectos || todosProyectos.length === 0) {

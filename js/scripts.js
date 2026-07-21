@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const { data: proyectos, error } = await supabase
         .from('proyectos')
         .select('*')
+        .eq('active', true)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
