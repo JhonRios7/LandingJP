@@ -1,0 +1,17 @@
+# Credenciales sensibles
+js/config.js
+
+# Respaldos y archivos temporales de migración
+*tmp/
+*.log
+
+# Carpetas de configuración de Editores/IDE
+.vscode/
+.idea/
+.project
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+
+

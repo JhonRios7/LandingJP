@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle del Proyecto - Subestaciones Montajes JP</title>
+  <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/normalize.css" />
+  <link rel="stylesheet" href="./css/estilos.css" />
+  <meta name="theme-color" content="#2091F9" />
+  <meta name="description" content="Detalle de los proyectos líderes de Subestaciones y Montajes JP." />
+</head>
+
+<body>
+
+  <!-- Hero Section with Header Included (Brings harmony with index.html) -->
+  <section class="hero hero--project">
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav container">
+        <div class="nav__title" style="cursor: pointer;" onclick="location.href='index.html'">
+          <div class="nav__logo">
+            <img src="./images/LOGO.jpg" alt="Logo de Subestaciones y Montajes JP" />
+          </div>
+          Subestaciones y Montajes JP
+        </div>
+        <div class="nav__menu">
+          <img src="./images/menu.svg" class="nav__img" alt="Abrir menú" />
+        </div>
+        <ul class="nav__link nav__link--menu">
+          <li class="nav__items"><a href="index.html#" class="nav__links">Inicio</a></li>
+          <li class="nav__items"><a href="index.html#mission" class="nav__links">Misión</a></li>
+          <li class="nav__items"><a href="index.html#about" class="nav__links">Acerca de</a></li>
+          <li class="nav__items"><a href="index.html#project" class="nav__links">Proyectos</a></li>
+          <li class="nav__items"><a href="index.html#gallery" class="nav__links">Galería</a></li>
+          <li class="nav__items"><a href="index.html#contact" class="nav__links">Contacto</a></li>
+          <img src="./images/close.svg" class="nav__close" alt="Cerrar menú" />
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Project Hero Info -->
+    <div class="container hero__container project-hero__container">
+      <h1 class="hero__title project-hero__title" id="project-main-title">
+        Cargando Proyecto...
+      </h1>
+      <p class="hero__paragraph project-hero__subtitle" id="project-main-subtitle">
+        Detalle del Proyecto
+      </p>
+    </div>
+  </section>
+
+  <!-- Sección de Detalle del Proyecto -->
+  <section class="project-detail-section">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" id="breadcrumbs">
+        <a href="index.html">Inicio</a>
+        <span class="separator">/</span>
+        <a href="index.html#project">Proyectos</a>
+        <span class="separator">/</span>
+        <span class="current" id="breadcrumb-current">Cargando...</span>
+      </nav>
+
+      <!-- Contenedor Principal (Grid) -->
+      <div class="project-detail__container" id="project-container">
+
+        <!-- Media (Video o Imagen) -->
+        <div class="project-detail__media" id="project-media">
+          <!-- Se inyecta dinámicamente -->
+        </div>
+
+        <!-- Ficha Técnica (Glassmorphic) -->
+        <div class="project-detail__specs">
+          <div>
+            <h2 class="project-detail__specs-title" id="project-title-specs">Ficha Técnica</h2>
+            <ul class="project-detail__spec-list">
+
+              <!-- Ubicación -->
+              <li class="project-detail__spec-item">
+                <div class="project-detail__spec-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                  </svg>
+                </div>
+                <div class="project-detail__spec-content">
+                  <span class="project-detail__spec-label">Ubicación</span>
+                  <span class="project-detail__spec-value" id="spec-location">-</span>
+                </div>
+              </li>
+
+              <!-- Servicio -->
+              <li class="project-detail__spec-item">
+                <div class="project-detail__spec-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.3C.5 6.7.9 9.8 2.9 11.8c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.5z" />
+                  </svg>
+                </div>
+                <div class="project-detail__spec-content">
+                  <span class="project-detail__spec-label">Tipo de Servicio</span>
+                  <span class="project-detail__spec-value" id="spec-service">-</span>
+                </div>
+              </li>
+
+              <!-- Nivel de Tensión -->
+              <li class="project-detail__spec-item">
+                <div class="project-detail__spec-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7 2v11h3v9l7-12h-4l4-8z" />
+                  </svg>
+                </div>
+                <div class="project-detail__spec-content">
+                  <span class="project-detail__spec-label">Nivel de Tensión</span>
+                  <span class="project-detail__spec-value" id="spec-voltage">-</span>
+                </div>
+              </li>
+
+              <!-- Cliente -->
+              <li class="project-detail__spec-item">
+                <div class="project-detail__spec-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
+                  </svg>
+                </div>
+                <div class="project-detail__spec-content">
+                  <span class="project-detail__spec-label">Cliente</span>
+                  <span class="project-detail__spec-value" id="spec-client">-</span>
+                </div>
+              </li>
+
+              <!-- Estado -->
+              <li class="project-detail__spec-item">
+                <div class="project-detail__spec-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
+                </div>
+                <div class="project-detail__spec-content">
+                  <span class="project-detail__spec-label">Estado</span>
+                  <span class="project-detail__spec-value" id="spec-status">-</span>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="project-detail__actions">
+            <a href="index.html#project" class="btn-back">
+              <svg viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+              </svg>
+              Atrás
+            </a>
+            <a href="index.html#contact" class="btn-contact-project">Cotizar Proyecto</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Descripción Detallada del Proyecto -->
+      <div class="project-detail__info">
+        <h3 class="project-detail__info-title" id="project-title-description">Descripción del Proyecto</h3>
+        <p class="project-detail__description-text" id="project-description-text">
+          Cargando descripción detallada...
+        </p>
+      </div>
+
+      <!-- Sección de Proyectos Relacionados -->
+      <div class="related-projects">
+        <h3 class="related-projects__title">Otros Proyectos Destacados</h3>
+        <div class="projects__grid" id="related-grid">
+          <!-- Proyectos relacionados inyectados por JS -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Error Modal / Mensaje cuando no se encuentra -->
+  <div id="error-container" style="display: none; padding: 100px 20px; text-align: center; background-color: #f8fafc;">
+    <div
+      style="max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+      <svg style="width: 64px; height: 64px; fill: #ef4444; margin-bottom: 20px;" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+      </svg>
+      <h2 style="font-size: 1.8rem; margin-bottom: 10px; color: #1e293b;">Proyecto no encontrado</h2>
+      <p style="color: #64748b; margin-bottom: 25px; line-height: 1.6;">El proyecto que intentas visualizar no existe o
+        ha sido movido. Por favor regresa a la página de inicio para ver nuestro catálogo completo.</p>
+      <a href="index.html" class="btn-back" style="display: inline-flex;">Ir al Inicio</a>
+  <!-- SDK de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Obtener ID de la URL
+      const params = new URLSearchParams(window.location.search);
+      const projectId = params.get('id');
+
+      if (!projectId) {
+        mostrarError();
+        return;
+      }
+
+      if (!supabase) {
+        console.warn("Supabase no configurado.");
+        mostrarError("Configura Supabase en js/config.js para visualizar los proyectos.");
+        return;
+      }
+
+      // 2. Buscar proyecto en Supabase
+      try {
+        const { data: project, error } = await supabase
+          .from('proyectos')
+          .select('*')
+          .eq('id', projectId)
+          .single();
+
+        if (error || !project) {
+          mostrarError();
+          return;
+        }
+
+        // 3. Rellenar información en la página
+        document.title = `${project.title} | Subestaciones Montajes JP`;
+        document.getElementById('breadcrumb-current').textContent = project.title;
+        document.getElementById('project-main-title').textContent = project.title;
+        document.getElementById('project-main-subtitle').textContent = project.location;
+        document.getElementById('project-title-specs').textContent = "Especificaciones";
+        document.getElementById('project-title-description').textContent = "Descripción del Trabajo";
+        document.getElementById('project-description-text').textContent = project.description;
+
+        // Cambiar fondo del hero dinámicamente con la imagen/video del proyecto
+        const heroElement = document.querySelector('.hero--project');
+        const heroBg = project.media_type === 'image' ? project.media_src : (project.poster || 'images/fondo.jpeg');
+        heroElement.style.backgroundImage = `linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("${heroBg}")`;
+
+        // Inyectar Ficha Técnica
+        document.getElementById('spec-location').textContent = project.location;
+        document.getElementById('spec-service').textContent = project.service;
+        document.getElementById('spec-voltage').textContent = project.voltage;
+        document.getElementById('spec-client').textContent = project.client;
+        document.getElementById('spec-status').textContent = project.status;
+
+        // Inyectar Media
+        const mediaContainer = document.getElementById('project-media');
+        if (project.media_type === 'video') {
+          mediaContainer.innerHTML = `
+            <video autoplay muted loop playsinline controls poster="${project.poster || ''}">
+              <source src="${project.media_src}" type="video/mp4" />
+              Tu navegador no soporta la reproducción de video.
+            </video>
+          `;
+        } else {
+          mediaContainer.innerHTML = `
+            <img src="${project.media_src}" alt="${project.title}" />
+          `;
+        }
+
+        // 4. Cargar Proyectos Relacionados (3 proyectos aleatorios excluyendo el actual)
+        cargarProyectosRelacionados(projectId);
+
+      } catch (err) {
+        console.error("Error al cargar el proyecto:", err);
+        mostrarError("Ocurrió un error al cargar el proyecto.");
+      }
+
+      // 5. Configurar menú hamburguesa para versión móvil
+      const menuButton = document.querySelector('.nav__menu');
+      const closeButton = document.querySelector('.nav__close');
+      const navLinks = document.querySelector('.nav__link--menu');
+
+      menuButton.addEventListener('click', () => {
+        navLinks.classList.add('nav__link--show');
+      });
+
+      closeButton.addEventListener('click', () => {
+        navLinks.classList.remove('nav__link--show');
+      });
+    });
+
+    function mostrarError(mensajeCustom) {
+      document.querySelector('.project-detail-section').style.display = 'none';
+      const errContainer = document.getElementById('error-container');
+      errContainer.style.display = 'block';
+      if (mensajeCustom) {
+        errContainer.querySelector('p').textContent = mensajeCustom;
+      }
+      document.title = "Proyecto No Encontrado - Subestaciones Montajes JP";
+    }
+
+    async function cargarProyectosRelacionados(currentId) {
+      const relatedGrid = document.getElementById('related-grid');
+      if (!relatedGrid) return;
+
+      try {
+        // Consulta todos los proyectos excepto el actual
+        const { data: todosProyectos, error } = await supabase
+          .from('proyectos')
+          .select('*')
+          .neq('id', currentId);
+
+        if (error || !todosProyectos || todosProyectos.length === 0) {
+          relatedGrid.innerHTML = '<p style="color: #64748b;">No hay otros proyectos destacados.</p>';
+          return;
+        }
+
+        // Seleccionar 3 aleatorios
+        const shuffled = todosProyectos.sort(() => 0.5 - Math.random());
+        const relacionados = shuffled.slice(0, 3);
+
+        relatedGrid.innerHTML = ''; // Limpiar
+
+        relacionados.forEach(p => {
+          const cardLink = document.createElement('a');
+          cardLink.href = `proyecto.html?id=${p.id}`;
+          cardLink.className = 'project__card';
+
+          if (p.media_type === 'video') {
+            cardLink.innerHTML = `
+              <video class="project__image" autoplay muted loop playsinline preload="metadata" poster="${p.poster || ''}">
+                <source src="${p.media_src}" type="video/mp4" />
+              </video>
+              <p class="project__location">${p.location}</p>
+            `;
+          } else {
+            cardLink.innerHTML = `
+              <img src="${p.media_src}" alt="${p.title}" class="project__image" />
+              <p class="project__location">${p.location}</p>
+            `;
+          }
+          relatedGrid.appendChild(cardLink);
+        });
+      } catch (err) {
+        console.error("Error al cargar proyectos relacionados:", err);
+      }
+    }
+  </script>
+
+  <!-- Custom Whatsapp (Idéntico al index) -->
+  <div class="wh-api">
+    <div class="wh-fixed">
+      <a class="walink" target="_blank"
+        href="https://wa.me/+573134575050?text=Hola%2C%20estoy%20interesado%20en%20obtener%20m%C3%A1s%20informaci%C3%B3n sobre Subestaciones y montajes JP">
+        <button class="wh-ap-btn"></button>
+      </a>
+    </div>
+  </div>
+</body>
+
+</html>

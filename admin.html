@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - Subestaciones Montajes JP</title>
+  <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/normalize.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #2091F9;
+      --primary-dark: #1d4ed8;
+      --bg-dark: #0f172a;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #10b981;
+      --danger: #ef4444;
+      --radius: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    /* AUTH SCREEN */
+    #auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .auth-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .auth-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .auth-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(32, 145, 249, 0.15);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* DASHBOARD */
+    #dashboard-container {
+      display: none;
+    }
+
+    .navbar {
+      background-color: #0f172a;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .btn-logout {
+      background: transparent;
+      border: 1px solid #475569;
+      color: #94a3b8;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-logout:hover {
+      color: white;
+      border-color: white;
+    }
+
+    .main-layout {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 10px 20px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -11px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--primary);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .btn-add {
+      background-color: var(--success);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .btn-add:hover {
+      opacity: 0.9;
+    }
+
+    /* PROYECTOS TABLE */
+    .table-container {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8fafc;
+      padding: 16px 20px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .project-row-img {
+      width: 60px;
+      height: 45px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-service {
+      background-color: #eff6ff;
+      color: #1e90ff;
+    }
+
+    .badge-voltage {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    .actions-cell {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-action {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-edit {
+      color: var(--primary);
+      border-color: rgba(32, 145, 249, 0.2);
+    }
+
+    .btn-edit:hover {
+      background-color: #eff6ff;
+    }
+
+    .btn-delete {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-delete:hover {
+      background-color: #fef2f2;
+    }
+
+    /* GALERÍA GRID */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .gallery-item-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-item-info {
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gallery-item-name {
+      font-size: 0.85rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+      margin: 0;
+    }
+
+    /* MODAL FORM */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius);
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: modalSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes modalSlide {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 20px 30px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .modal-body {
+      padding: 30px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .btn-secondary {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: none;
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      background-color: #e2e8f0;
+    }
+
+    .file-input-container {
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .file-input-container:hover {
+      border-color: var(--primary);
+      background-color: #eff6ff;
+    }
+
+    .file-input-container input {
+      display: none;
+    }
+
+    .file-preview {
+      margin-top: 10px;
+      max-height: 100px;
+      max-width: 100%;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PANTALLA DE AUTENTICACIÓN -->
+  <div id="auth-container">
+    <div class="auth-card">
+      <img src="images/LOGO.jpg" alt="Logo JP" class="auth-logo" onerror="this.src='./images/LOGO.jpg'">
+      <h2 class="auth-title">Iniciar Sesión</h2>
+      <p class="auth-subtitle">Panel de Control Subestaciones y Montajes JP</p>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Correo Electrónico</label>
+          <input type="email" id="login-email" class="form-control" placeholder="nombre@correo.com" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-login-submit">Ingresar al Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PANTALLA PRINCIPAL DEL DASHBOARD -->
+  <div id="dashboard-container">
+    <nav class="navbar">
+      <div class="nav-brand">
+        <img src="images/LOGO.jpg" alt="Logo" class="nav-logo">
+        <span>Admin Portal JP</span>
+      </div>
+      <div class="nav-user">
+        <span id="user-email-display" style="font-size: 0.9rem; color: #94a3b8;">admin@symjp.com</span>
+        <button class="btn-logout" id="logout-btn">Cerrar Sesión</button>
+      </div>
+    </nav>
+
+    <div class="main-layout">
+      <!-- Pestañas -->
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('projects-tab')">Proyectos</button>
+        <button class="tab-btn" onclick="switchTab('gallery-tab')">Galería de Imágenes</button>
+      </div>
+
+      <!-- Pestaña de Proyectos -->
+      <div id="projects-tab" class="tab-content active">
+        <div class="section-header">
+          <h2 class="section-title">Gestión de Proyectos</h2>
+          <button class="btn-add" onclick="openProjectModal()">
+            <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+            Nuevo Proyecto
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Media</th>
+                <th>Título</th>
+                <th>Ubicación</th>
+                <th>Servicio</th>
+                <th>Tensión</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="projects-table-body">
+              <tr>
+                <td colspan="8" style="text-align:center;color:var(--text-muted);">Cargando proyectos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pestaña de Galería -->
+      <div id="gallery-tab" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Imágenes en el Carrusel</h2>
+          <button class="btn-add" style="background-color:var(--primary)" onclick="openGalleryModal()">
+            <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M19.35,10.04C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.04C2.34,8.36 0,10.91 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.04M19,18H6A4,4 0 0,1 2,14C2,11.95 3.53,10.24 5.56,10.03L6.63,9.92L7.13,8.97C8.08,7.14 9.94,6 12,6C14.89,6 17.39,8.08 17.85,10.95L18.08,12.42L19.57,12.5C21.04,12.58 22,13.74 22,15A3,3 0 0,1 19,18M8,13H10.55V16H13.45V13H16L12,9L8,13Z" /></svg>
+            Subir Imagen a Galería
+          </button>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid-container">
+          <p style="text-align:center;grid-column: 1/-1;color:var(--text-muted);">Cargando fotos de la galería...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FORMULARIO PROYECTO -->
+  <div id="project-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-project-title">Nuevo Proyecto</h3>
+        <button class="modal-close" onclick="closeProjectModal()">&times;</button>
+      </div>
+      <form id="project-form">
+        <div class="modal-body">
+          <input type="hidden" id="project-db-mode" value="create"> <!-- edit o create -->
+          
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="proj-id">ID / Slug Único (Ej: sahagun-cordoba)</label>
+              <input type="text" id="proj-id" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="proj-title">Título del Proyecto</label>
+              <input type="text" id="proj-title" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="proj-location">Ubicación (Ej: Sahagún, Córdoba)</label>
+              <input type="text" id="proj-location" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="proj-client">Cliente</label>
+              <input type="text" id="proj-client" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="proj-service">Tipo de Servicio</label>
+              <input type="text" id="proj-service" class="form-control" placeholder="Ej: Montaje de Subestaciones" required>
+            </div>
+            <div class="form-group">
+              <label for="proj-voltage">Nivel de Tensión</label>
+              <input type="text" id="proj-voltage" class="form-control" placeholder="Ej: 500 kV" required>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="proj-status">Estado</label>
+              <input type="text" id="proj-status" class="form-control" placeholder="Ej: Completado" required>
+            </div>
+            <div class="form-group">
+              <label for="proj-media-type">Tipo de Multimedia</label>
+              <select id="proj-media-type" class="form-control" onchange="togglePosterField()">
+                <option value="image">Imagen</option>
+                <option value="video">Video</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Archivo de Multimedia (Sube imagen/video)</label>
+            <div class="file-input-container" onclick="document.getElementById('proj-file').click()">
+              <p id="proj-file-status">Haz clic para seleccionar o arrastra el archivo aquí</p>
+              <input type="file" id="proj-file" accept="image/*,video/*" onchange="handleFileSelect(this, 'proj-file-status', 'proj-img-preview')">
+              <img id="proj-img-preview" class="file-preview">
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin:5px 0 0 0;">O si prefieres, ingresa la URL directamente abajo:</p>
+            <input type="text" id="proj-media-src" class="form-control" placeholder="Ej: images/proyecto1.jpg">
+          </div>
+
+          <div class="form-group" id="poster-group" style="display:none;">
+            <label>Poster del Video (Miniatura estática)</label>
+            <div class="file-input-container" onclick="document.getElementById('proj-poster-file').click()">
+              <p id="proj-poster-status">Seleccionar imagen para miniatura</p>
+              <input type="file" id="proj-poster-file" accept="image/*" onchange="handleFileSelect(this, 'proj-poster-status', 'proj-poster-preview')">
+              <img id="proj-poster-preview" class="file-preview">
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin:5px 0 0 0;">O ingresa la URL de miniatura directamente:</p>
+            <input type="text" id="proj-poster" class="form-control" placeholder="Ej: images/MovTrafo.jpeg">
+          </div>
+
+          <div class="form-group">
+            <label for="proj-description">Descripción Detallada</label>
+            <textarea id="proj-description" class="form-control" rows="4" required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="closeProjectModal()">Cancelar</button>
+            <button type="submit" class="btn-submit" style="width:auto;margin:0;">Guardar Proyecto</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL SUBIR A GALERÍA -->
+  <div id="gallery-modal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Subir Imagen a Galería</h3>
+        <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
+      </div>
+      <form id="gallery-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="gal-alt">Texto Alternativo / Descripción corta</label>
+            <input type="text" id="gal-alt" class="form-control" placeholder="Ej: Montaje de transformador" required>
+          </div>
+
+          <div class="form-group">
+            <label>Imagen</label>
+            <div class="file-input-container" onclick="document.getElementById('gal-file').click()">
+              <p id="gal-file-status">Seleccionar foto</p>
+              <input type="file" id="gal-file" accept="image/*" required onchange="handleFileSelect(this, 'gal-file-status', 'gal-img-preview')">
+              <img id="gal-img-preview" class="file-preview">
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin:5px 0 0 0;">O ingresa la URL directamente:</p>
+            <input type="text" id="gal-src" class="form-control" placeholder="Ej: images/foto.jpg">
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="closeGalleryModal()">Cancelar</button>
+            <button type="submit" class="btn-submit" style="width:auto;margin:0;">Subir Imagen</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SDK de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Configuración y Cliente de Supabase -->
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+
+  <script>
+    let globalSession = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!supabase) {
+        alert("Supabase no está configurado. Edita js/config.js para poder operar el panel.");
+        return;
+      }
+
+      // Validar si existe sesión activa al cargar
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (session) {
+        onUserAuthenticated(session);
+      } else {
+        document.getElementById('auth-container').style.display = 'flex';
+        document.getElementById('dashboard-container').style.display = 'none';
+      }
+
+      // Escuchar cambios de estado en la autenticación
+      supabase.auth.onAuthStateChange((_event, session) => {
+        if (session) {
+          onUserAuthenticated(session);
+        } else {
+          document.getElementById('auth-container').style.display = 'flex';
+          document.getElementById('dashboard-container').style.display = 'none';
+        }
+      });
+
+      // Manejar Formulario de Login
+      const loginForm = document.getElementById('login-form');
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+        const btn = document.getElementById('btn-login-submit');
+
+        btn.disabled = true;
+        btn.textContent = "Verificando...";
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+
+        if (error) {
+          alert("Error de autenticación: " + error.message);
+          btn.disabled = false;
+          btn.textContent = "Ingresar al Dashboard";
+        }
+      });
+
+      // Manejar Formulario de Proyecto (Crear / Editar)
+      const projectForm = document.getElementById('project-form');
+      projectForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await saveProject();
+      });
+
+      // Manejar Formulario de Galería
+      const galleryForm = document.getElementById('gallery-form');
+      galleryForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await saveGalleryItem();
+      });
+
+      // Cerrar sesión
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+      });
+    });
+
+    function onUserAuthenticated(session) {
+      globalSession = session;
+      document.getElementById('auth-container').style.display = 'none';
+      document.getElementById('dashboard-container').style.display = 'block';
+      document.getElementById('user-email-display').textContent = session.user.email;
+      
+      // Cargar data por defecto
+      loadProjects();
+      loadGallery();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      // Activar la pestaña correcta
+      const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.toLowerCase().includes(tabId === 'projects-tab' ? 'proyectos' : 'galer'));
+      if (targetBtn) targetBtn.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // --- LOGICA DE PROYECTOS ---
+    async function loadProjects() {
+      const tbody = document.getElementById('projects-table-body');
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Cargando proyectos...</td></tr>';
+
+      try {
+        const { data: proyectos, error } = await supabase
+          .from('proyectos')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!proyectos || proyectos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-muted);">No hay proyectos creados.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        proyectos.forEach(p => {
+          const tr = document.createElement('tr');
+          
+          let mediaHtml = '';
+          if (p.media_type === 'video') {
+            mediaHtml = `<div style="position:relative;"><video class="project-row-img" poster="${p.poster || ''}"></video><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:12px;background:rgba(0,0,0,0.5);border-radius:50%;padding:2px 5px;">▶</span></div>`;
+          } else {
+            mediaHtml = `<img src="${p.media_src}" alt="media" class="project-row-img" onerror="this.src='images/MovTrafo.jpeg'">`;
+          }
+
+          tr.innerHTML = `
+            <td>${mediaHtml}</td>
+            <td style="font-weight:600;">${p.title}</td>
+            <td>${p.location}</td>
+            <td><span class="badge badge-service">${p.service}</span></td>
+            <td><span class="badge badge-voltage">${p.voltage}</span></td>
+            <td>${p.client}</td>
+            <td>${p.status}</td>
+            <td>
+              <div class="actions-cell">
+                <button class="btn-action btn-edit" onclick="editProject('${p.id}')">Editar</button>
+                <button class="btn-action btn-delete" onclick="deleteProject('${p.id}')">Eliminar</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--danger);">Error: ${err.message}</td></tr>`;
+      }
+    }
+
+    function togglePosterField() {
+      const type = document.getElementById('proj-media-type').value;
+      const group = document.getElementById('poster-group');
+      if (type === 'video') {
+        group.style.display = 'block';
+      } else {
+        group.style.display = 'none';
+      }
+    }
+
+    function handleFileSelect(input, statusId, previewId) {
+      const file = input.files[0];
+      const statusText = document.getElementById(statusId);
+      const preview = document.getElementById(previewId);
+
+      if (file) {
+        statusText.textContent = `Archivo seleccionado: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+        
+        // Mostrar preview si es imagen
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        } else {
+          preview.style.display = 'none';
+        }
+      } else {
+        statusText.textContent = "Haz clic para seleccionar o arrastra el archivo aquí";
+        preview.style.display = 'none';
+      }
+    }
+
+    function openProjectModal(isEdit = false) {
+      document.getElementById('project-modal').style.display = 'flex';
+      const form = document.getElementById('project-form');
+      form.reset();
+      
+      // Limpiar previews
+      document.getElementById('proj-img-preview').style.display = 'none';
+      document.getElementById('proj-poster-preview').style.display = 'none';
+      document.getElementById('proj-file-status').textContent = "Haz clic para seleccionar o arrastra el archivo aquí";
+      document.getElementById('proj-poster-status').textContent = "Seleccionar imagen para miniatura";
+
+      if (!isEdit) {
+        document.getElementById('modal-project-title').textContent = "Nuevo Proyecto";
+        document.getElementById('project-db-mode').value = "create";
+        document.getElementById('proj-id').disabled = false;
+      }
+      togglePosterField();
+    }
+
+    function closeProjectModal() {
+      document.getElementById('project-modal').style.display = 'none';
+    }
+
+    async function editProject(id) {
+      openProjectModal(true);
+      document.getElementById('modal-project-title').textContent = "Editar Proyecto";
+      document.getElementById('project-db-mode').value = "edit";
+      document.getElementById('proj-id').disabled = true; // No permitir cambiar la clave primaria
+
+      try {
+        const { data: p, error } = await supabase
+          .from('proyectos')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) throw error;
+
+        document.getElementById('proj-id').value = p.id;
+        document.getElementById('proj-title').value = p.title;
+        document.getElementById('proj-location').value = p.location;
+        document.getElementById('proj-client').value = p.client;
+        document.getElementById('proj-service').value = p.service;
+        document.getElementById('proj-voltage').value = p.voltage;
+        document.getElementById('proj-status').value = p.status;
+        document.getElementById('proj-media-type').value = p.media_type;
+        document.getElementById('proj-media-src').value = p.media_src;
+        document.getElementById('proj-poster').value = p.poster || '';
+        document.getElementById('proj-description').value = p.description;
+
+        togglePosterField();
+      } catch (err) {
+        alert("Error cargando detalles del proyecto: " + err.message);
+        closeProjectModal();
+      }
+    }
+
+    async function uploadToStorage(file, folder = 'media') {
+      // Intentar subir al bucket 'landing-media'
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+      
+      const { data, error } = await supabase.storage
+        .from('landing-media')
+        .upload(fileName, file);
+
+      if (error) {
+        console.warn("Storage upload failed. Posiblemente no tienes configurado el Storage Bucket con políticas RLS de inserción pública/autenticada: ", error);
+        throw error;
+      }
+
+      // Retornar la URL pública del archivo cargado
+      const { data: { publicUrl } } = supabase.storage
+        .from('landing-media')
+        .getPublicUrl(fileName);
+
+      return publicUrl;
+    }
+
+    async function saveProject() {
+      const mode = document.getElementById('project-db-mode').value;
+      const id = document.getElementById('proj-id').value.trim();
+      const title = document.getElementById('proj-title').value.trim();
+      const location = document.getElementById('proj-location').value.trim();
+      const client = document.getElementById('proj-client').value.trim();
+      const service = document.getElementById('proj-service').value.trim();
+      const voltage = document.getElementById('proj-voltage').value.trim();
+      const status = document.getElementById('proj-status').value.trim();
+      const media_type = document.getElementById('proj-media-type').value;
+      const description = document.getElementById('proj-description').value.trim();
+      
+      let media_src = document.getElementById('proj-media-src').value.trim();
+      let poster = document.getElementById('proj-poster').value.trim() || null;
+
+      // Subir archivos al storage si se seleccionaron
+      const fileInput = document.getElementById('proj-file');
+      const posterInput = document.getElementById('proj-poster-file');
+
+      try {
+        if (fileInput.files.length > 0) {
+          media_src = await uploadToStorage(fileInput.files[0], 'projects');
+        }
+
+        if (media_type === 'video' && posterInput.files.length > 0) {
+          poster = await uploadToStorage(posterInput.files[0], 'posters');
+        }
+
+        if (!media_src) {
+          alert("Debes seleccionar un archivo o proveer una URL de recurso.");
+          return;
+        }
+
+        const projectPayload = {
+          title,
+          location,
+          client,
+          service,
+          voltage,
+          status,
+          media_type,
+          media_src,
+          poster,
+          description
+        };
+
+        if (mode === 'create') {
+          projectPayload.id = id;
+          const { error } = await supabase.from('proyectos').insert([projectPayload]);
+          if (error) throw error;
+          alert("Proyecto creado con éxito.");
+        } else {
+          const { error } = await supabase.from('proyectos').update(projectPayload).eq('id', id);
+          if (error) throw error;
+          alert("Proyecto actualizado con éxito.");
+        }
+
+        closeProjectModal();
+        loadProjects();
+      } catch (err) {
+        alert("Error al guardar: " + err.message + "\n\nNota: Asegúrate de que el bucket de storage 'landing-media' exista en Supabase.");
+      }
+    }
+
+    async function deleteProject(id) {
+      if (!confirm("¿Estás seguro de que deseas eliminar este proyecto de manera permanente?")) return;
+
+      try {
+        const { error } = await supabase
+          .from('proyectos')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        alert("Proyecto eliminado.");
+        loadProjects();
+      } catch (err) {
+        alert("Error al eliminar: " + err.message);
+      }
+    }
+
+    // --- LOGICA DE GALERÍA ---
+    async function loadGallery() {
+      const grid = document.getElementById('gallery-grid-container');
+      grid.innerHTML = '<p style="text-align:center;grid-column: 1/-1;">Cargando fotos...</p>';
+
+      try {
+        const { data: fotos, error } = await supabase
+          .from('galeria')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        if (error) throw error;
+
+        if (!fotos || fotos.length === 0) {
+          grid.innerHTML = '<p style="text-align:center;grid-column: 1/-1;color:var(--text-muted);">La galería está vacía.</p>';
+          return;
+        }
+
+        grid.innerHTML = '';
+        fotos.forEach(foto => {
+          const card = document.createElement('div');
+          card.className = 'gallery-item-card';
+          card.innerHTML = `
+            <img src="${foto.img_src}" alt="${foto.alt_text}" onerror="this.src='images/MovTrafo.jpeg'">
+            <div class="gallery-item-info">
+              <p class="gallery-item-name" title="${foto.alt_text}">${foto.alt_text}</p>
+              <button class="btn-action btn-delete" style="padding: 3px 8px; font-size: 0.75rem;" onclick="deleteGalleryItem(${foto.id})">Eliminar</button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        grid.innerHTML = `<p style="text-align:center;grid-column: 1/-1;color:var(--danger);">Error: ${err.message}</p>`;
+      }
+    }
+
+    function openGalleryModal() {
+      document.getElementById('gallery-modal').style.display = 'flex';
+      const form = document.getElementById('gallery-form');
+      form.reset();
+      document.getElementById('gal-img-preview').style.display = 'none';
+      document.getElementById('gal-file-status').textContent = "Seleccionar foto";
+    }
+
+    function closeGalleryModal() {
+      document.getElementById('gallery-modal').style.display = 'none';
+    }
+
+    async function saveGalleryItem() {
+      const alt_text = document.getElementById('gal-alt').value.trim();
+      let img_src = document.getElementById('gal-src').value.trim();
+      const fileInput = document.getElementById('gal-file');
+
+      try {
+        if (fileInput.files.length > 0) {
+          img_src = await uploadToStorage(fileInput.files[0], 'gallery');
+        }
+
+        if (!img_src) {
+          alert("Debes seleccionar una imagen para subir o especificar su URL.");
+          return;
+        }
+
+        const { error } = await supabase
+          .from('galeria')
+          .insert([{ img_src, alt_text }]);
+
+        if (error) throw error;
+
+        alert("Imagen subida a la galería con éxito.");
+        closeGalleryModal();
+        loadGallery();
+      } catch (err) {
+        alert("Error al subir a la galería: " + err.message + "\n\nNota: Asegúrate de que el bucket de storage 'landing-media' exista.");
+      }
+    }
+
+    async function deleteGalleryItem(id) {
+      if (!confirm("¿Estás seguro de que deseas eliminar esta foto del carrusel?")) return;
+
+      try {
+        const { error } = await supabase
+          .from('galeria')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        alert("Imagen eliminada de la galería.");
+        loadGallery();
+      } catch (err) {
+        alert("Error al eliminar: " + err.message);
+      }
+    }
+  </script>
+</body>
+</html>
