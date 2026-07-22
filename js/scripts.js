@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
           `;
         } else {
           card.innerHTML = `
-            <img src="${p.media_src}" alt="${p.title}" class="project__image" />
+            <img src="${p.media_src}" alt="${p.title}" class="project__image" loading="lazy" />
             <p class="project__location">${p.location}</p>
           `;
         }
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const slide = document.createElement('div');
         slide.className = 'carousel__slide';
         slide.id = `image-${index + 1}`;
-        slide.innerHTML = `<img src="${foto.img_src}" alt="${foto.alt_text}" />`;
+        slide.innerHTML = `<img src="${foto.img_src}" alt="${foto.alt_text}" loading="lazy" />`;
         slidesWrapper.appendChild(slide);
       });
       container.appendChild(slidesWrapper);
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
       fotos.forEach((foto, index) => {
         const label = document.createElement('label');
         label.setAttribute('for', `slide-${index + 1}`);
-        label.innerHTML = `<img src="${foto.img_src}" alt="${foto.alt_text}" />`;
+        label.innerHTML = `<img src="${foto.img_src}" alt="${foto.alt_text}" loading="lazy" />`;
         thumbnailsWrapper.appendChild(label);
       });
       container.appendChild(thumbnailsWrapper);
