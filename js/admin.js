@@ -6,13 +6,13 @@
         Swal.fire({
           icon: 'error',
           title: 'Configuración Requerida',
-          text: 'Supabase no estÃ¡ configurado. Edita js/config.js para poder operar el panel.',
+          text: 'Supabase no está configurado. Edita js/config.js para poder operar el panel.',
           confirmButtonColor: '#2091F9'
         });
         return;
       }
 
-      // Validar si existe sesiÃ³n activa al cargar
+      // Validar si existe sesión activa al cargar
       const { data: { session }, error } = await supabase.auth.getSession();
       if (session) {
         onUserAuthenticated(session);
@@ -21,7 +21,7 @@
         document.getElementById('dashboard-container').style.display = 'none';
       }
 
-      // Escuchar cambios de estado en la autenticaciÃ³n
+      // Escuchar cambios de estado en la autenticación
       supabase.auth.onAuthStateChange((_event, session) => {
         if (session) {
           onUserAuthenticated(session);
@@ -51,7 +51,7 @@
           Swal.fire({
             icon: 'error',
             title: 'Acceso Denegado',
-            text: 'Error de autenticaciÃ³n: ' + error.message,
+            text: 'Error de autenticación: ' + error.message,
             confirmButtonColor: '#ef4444'
           });
           btn.disabled = false;
@@ -66,14 +66,14 @@
         await saveProject();
       });
 
-      // Manejar Formulario de GalerÃ­a
+      // Manejar Formulario de Galería
       const galleryForm = document.getElementById('gallery-form');
       galleryForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         await saveGalleryItem();
       });
 
-      // Cerrar sesiÃ³n
+      // Cerrar sesión
       document.getElementById('logout-btn').addEventListener('click', async () => {
         await supabase.auth.signOut();
       });
@@ -94,7 +94,7 @@
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
       
-      // Activar la pestaÃ±a correcta
+      // Activar la pestaña correcta
       const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.toLowerCase().includes(tabId === 'projects-tab' ? 'proyectos' : 'galer'));
       if (targetBtn) targetBtn.classList.add('active');
       document.getElementById(tabId).classList.add('active');
@@ -124,7 +124,7 @@
           
           let mediaHtml = '';
           if (p.media_type === 'video') {
-            mediaHtml = `<div style="position:relative;"><video class="project-row-img" poster="${p.poster || ''}"></video><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:12px;background:rgba(0,0,0,0.5);border-radius:50%;padding:2px 5px;">â–¶</span></div>`;
+            mediaHtml = `<div style="position:relative;"><video class="project-row-img" poster="${p.poster || ''}"></video><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:12px;background:rgba(0,0,0,0.5);border-radius:50%;padding:2px 5px;">▶</span></div>`;
           } else {
             mediaHtml = `<img src="${p.media_src}" alt="media" class="project-row-img" onerror="this.src='../images/MovTrafo.jpeg'">`;
           }
@@ -211,10 +211,10 @@
         document.getElementById('proj-description').value = p.description;
         document.getElementById('proj-active').checked = p.active !== false;
 
-        // Cargar galerÃ­a
+        // Cargar galería
         currentProjectMediaGallery = p.media_gallery;
         if (!currentProjectMediaGallery || !Array.isArray(currentProjectMediaGallery) || currentProjectMediaGallery.length === 0) {
-          // Fallback para proyectos antiguos migrados sin galerÃ­a de array
+          // Fallback para proyectos antiguos migrados sin galería de array
           if (p.media_src) {
             currentProjectMediaGallery = [{
               type: p.media_type || 'image',
@@ -243,7 +243,7 @@
       grid.innerHTML = '';
 
       if (currentProjectMediaGallery.length === 0) {
-        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 10px 0;">La galerÃ­a estÃ¡ vacÃ­a. AÃ±ade imÃ¡genes o videos.</p>';
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 10px 0;">La galería está vacía. Añade imágenes o videos.</p>';
         return;
       }
 
@@ -261,7 +261,7 @@
           mediaHtml = `
             <div style="width:100%; height:100%; position:relative; background:#000;">
               <video style="width:100%; height:100%; object-fit:cover;" src="${item.src}" poster="${item.poster || ''}"></video>
-              <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-size:10px; background:rgba(0,0,0,0.6); border-radius:50%; padding:2px 4px; pointer-events:none;">â–¶</span>
+              <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-size:10px; background:rgba(0,0,0,0.6); border-radius:50%; padding:2px 4px; pointer-events:none;">▶</span>
             </div>
           `;
         } else {
@@ -270,7 +270,7 @@
 
         container.innerHTML = `
           ${mediaHtml}
-          <button type="button" onclick="removeProjectGalleryItem(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); color: white; border: none; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,0.3);" title="Quitar archivo">Ã—</button>
+          <button type="button" onclick="removeProjectGalleryItem(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(239, 68, 68, 0.9); color: white; border: none; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,0.3);" title="Quitar archivo">×</button>
         `;
         grid.appendChild(container);
       });
@@ -336,7 +336,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Error de Carga',
-          text: 'OcurriÃ³ un error al subir el archivo: ' + err.message,
+          text: 'Ocurrió un error al subir el archivo: ' + err.message,
           confirmButtonColor: '#ef4444'
         });
       } finally {
@@ -379,8 +379,8 @@
       if (currentProjectMediaGallery.length === 0) {
         Swal.fire({
           icon: 'warning',
-          title: 'GalerÃ­a VacÃ­a',
-          text: 'Debes aÃ±adir al menos una imagen o video a la galerÃ­a del proyecto.',
+          title: 'Galería Vacía',
+          text: 'Debes añadir al menos una imagen o video a la galería del proyecto.',
           confirmButtonColor: '#2091F9'
         });
         return;
@@ -397,7 +397,7 @@
           description,
           active,
           media_gallery: currentProjectMediaGallery,
-          // Compatibilidad: poblar los campos principales con el primer item de la galerÃ­a
+          // Compatibilidad: poblar los campos principales con el primer item de la galería
           media_type: currentProjectMediaGallery[0].type,
           media_src: currentProjectMediaGallery[0].src,
           poster: currentProjectMediaGallery[0].poster || null
@@ -410,7 +410,7 @@
           Swal.fire({
             icon: 'success',
             title: 'Creado',
-            text: 'Proyecto creado con Ã©xito.',
+            text: 'Proyecto creado con éxito.',
             timer: 2000,
             showConfirmButton: false
           });
@@ -420,7 +420,7 @@
           Swal.fire({
             icon: 'success',
             title: 'Actualizado',
-            text: 'Proyecto actualizado con Ã©xito.',
+            text: 'Proyecto actualizado con éxito.',
             timer: 2000,
             showConfirmButton: false
           });
@@ -432,7 +432,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Error al Guardar',
-          text: err.message + '. AsegÃºrate de que la estructura de tu tabla contenga el campo "media_gallery".',
+          text: err.message + '. Asegúrate de que la estructura de tu tabla contenga el campo "media_gallery".',
           confirmButtonColor: '#ef4444'
         });
       }
@@ -440,10 +440,10 @@
 
     async function toggleProjectStatus(id, currentActive) {
       const newActive = !currentActive;
-      const confirmTitle = newActive ? "Â¿Habilitar Proyecto?" : "Â¿Inhabilitar Proyecto?";
+      const confirmTitle = newActive ? "¿Habilitar Proyecto?" : "¿Inhabilitar Proyecto?";
       const confirmText = newActive
-        ? "Este proyecto volverÃ¡ a ser visible pÃºblicamente en la Landing Page."
-        : "Este proyecto se ocultarÃ¡ temporalmente de la Landing Page.";
+        ? "Este proyecto volverá a ser visible públicamente en la Landing Page."
+        : "Este proyecto se ocultará temporalmente de la Landing Page.";
 
       const result = await Swal.fire({
         title: confirmTitle,
@@ -452,7 +452,7 @@
         showCancelButton: true,
         confirmButtonColor: newActive ? '#10b981' : '#64748b',
         cancelButtonColor: '#e2e8f0',
-        confirmButtonText: newActive ? 'SÃ­, habilitar' : 'SÃ­, inhabilitar',
+        confirmButtonText: newActive ? 'Sí, habilitar' : 'Sí, inhabilitar',
         cancelButtonText: 'Cancelar'
       });
 
@@ -483,7 +483,7 @@
       }
     }
 
-    // --- LOGICA DE GALERÃA ---
+    // --- LOGICA DE GALERÍA ---
     async function loadGallery() {
       const grid = document.getElementById('gallery-grid-container');
       grid.innerHTML = '<p style="text-align:center;grid-column: 1/-1;">Cargando fotos...</p>';
@@ -497,7 +497,7 @@
         if (error) throw error;
 
         if (!fotos || fotos.length === 0) {
-          grid.innerHTML = '<p style="text-align:center;grid-column: 1/-1;color:var(--text-muted);">La galerÃ­a estÃ¡ vacÃ­a.</p>';
+          grid.innerHTML = '<p style="text-align:center;grid-column: 1/-1;color:var(--text-muted);">La galería está vacía.</p>';
           return;
         }
 
@@ -560,7 +560,7 @@
         Swal.fire({
           icon: 'success',
           title: 'Imagen Subida',
-          text: 'Imagen subida a la galerÃ­a con Ã©xito.',
+          text: 'Imagen subida a la galería con éxito.',
           timer: 2000,
           showConfirmButton: false
         });
@@ -570,7 +570,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Error al Subir',
-          text: err.message + '. AsegÃºrate de que el bucket de storage "landing-media" exista.',
+          text: err.message + '. Asegúrate de que el bucket de storage "landing-media" exista.',
           confirmButtonColor: '#ef4444'
         });
       }
@@ -578,13 +578,13 @@
 
     async function deleteGalleryItem(id) {
       const result = await Swal.fire({
-        title: 'Â¿Eliminar Imagen?',
-        text: "Esta foto se borrarÃ¡ de forma permanente de tu galerÃ­a de carrusel.",
+        title: '¿Eliminar Imagen?',
+        text: "Esta foto se borrará de forma permanente de tu galería de carrusel.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#e2e8f0',
-        confirmButtonText: 'SÃ­, eliminar',
+        confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
       });
 
@@ -601,7 +601,7 @@
         Swal.fire({
           icon: 'success',
           title: 'Eliminada',
-          text: 'Imagen eliminada de la galerÃ­a.',
+          text: 'Imagen eliminada de la galería.',
           timer: 1500,
           showConfirmButton: false
         });
