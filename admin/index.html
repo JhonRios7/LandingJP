@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -350,7 +350,7 @@
       background-color: #fef2f2;
     }
 
-    /* GALERÃA GRID */
+    /* GALERÍA GRID */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -504,21 +504,21 @@
 </head>
 <body>
 
-  <!-- PANTALLA DE AUTENTICACIÃ“N -->
+  <!-- PANTALLA DE AUTENTICACIÓN -->
   <div id="auth-container">
     <div class="auth-card">
-      <img src=".../images/LOGO.jpg" alt="Logo JP" class="auth-logo" onerror="this.src='./.../images/LOGO.jpg'">
-      <h2 class="auth-title">Iniciar SesiÃ³n</h2>
+      <img src="../images/LOGO.jpg" alt="Logo JP" class="auth-logo" >
+      <h2 class="auth-title">Iniciar Sesión</h2>
       <p class="auth-subtitle">Panel de Control Subestaciones y Montajes JP</p>
       
       <form id="login-form">
         <div class="form-group">
-          <label for="login-email">Correo ElectrÃ³nico</label>
+          <label for="login-email">Correo Electrónico</label>
           <input type="email" id="login-email" class="form-control" placeholder="nombre@correo.com" required>
         </div>
         <div class="form-group">
-          <label for="login-password">ContraseÃ±a</label>
-          <input type="password" id="login-password" class="form-control" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
         </div>
         <button type="submit" class="btn-submit" id="btn-login-submit">Ingresar al Dashboard</button>
       </form>
@@ -529,26 +529,26 @@
   <div id="dashboard-container">
     <nav class="navbar">
       <div class="nav-brand">
-        <img src=".../images/LOGO.jpg" alt="Logo" class="nav-logo">
+        <img src="../images/LOGO.jpg" alt="Logo" class="nav-logo">
         <span>Admin Portal JP</span>
       </div>
       <div class="nav-user">
         <span id="user-email-display" style="font-size: 0.9rem; color: #94a3b8;">admin@symjp.com</span>
-        <button class="btn-logout" id="logout-btn">Cerrar SesiÃ³n</button>
+        <button class="btn-logout" id="logout-btn">Cerrar Sesión</button>
       </div>
     </nav>
 
     <div class="main-layout">
-      <!-- PestaÃ±as -->
+      <!-- Pestañas -->
       <div class="tab-nav">
         <button class="tab-btn active" onclick="switchTab('projects-tab')">Proyectos</button>
-        <button class="tab-btn" onclick="switchTab('gallery-tab')">GalerÃ­a de ImÃ¡genes</button>
+        <button class="tab-btn" onclick="switchTab('gallery-tab')">Galería de Imágenes</button>
       </div>
 
-      <!-- PestaÃ±a de Proyectos -->
+      <!-- Pestaña de Proyectos -->
       <div id="projects-tab" class="tab-content active">
         <div class="section-header">
-          <h2 class="section-title">GestiÃ³n de Proyectos</h2>
+          <h2 class="section-title">Gestión de Proyectos</h2>
           <button class="btn-add" onclick="openProjectModal()">
             <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
             Nuevo Proyecto
@@ -560,10 +560,10 @@
             <thead>
               <tr>
                 <th>Media</th>
-                <th>TÃ­tulo</th>
-                <th>UbicaciÃ³n</th>
+                <th>Título</th>
+                <th>Ubicación</th>
                 <th>Servicio</th>
-                <th>TensiÃ³n</th>
+                <th>Tensión</th>
                 <th>Cliente</th>
                 <th>Estado</th>
                 <th>Visibilidad</th>
@@ -579,18 +579,18 @@
         </div>
       </div>
 
-      <!-- PestaÃ±a de GalerÃ­a -->
+      <!-- Pestaña de Galería -->
       <div id="gallery-tab" class="tab-content">
         <div class="section-header">
-          <h2 class="section-title">ImÃ¡genes en el Carrusel</h2>
+          <h2 class="section-title">Imágenes en el Carrusel</h2>
           <button class="btn-add" style="background-color:var(--primary)" onclick="openGalleryModal()">
             <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M19.35,10.04C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.04C2.34,8.36 0,10.91 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.04M19,18H6A4,4 0 0,1 2,14C2,11.95 3.53,10.24 5.56,10.03L6.63,9.92L7.13,8.97C8.08,7.14 9.94,6 12,6C14.89,6 17.39,8.08 17.85,10.95L18.08,12.42L19.57,12.5C21.04,12.58 22,13.74 22,15A3,3 0 0,1 19,18M8,13H10.55V16H13.45V13H16L12,9L8,13Z" /></svg>
-            Subir Imagen a GalerÃ­a
+            Subir Imagen a Galería
           </button>
         </div>
 
         <div class="gallery-grid" id="gallery-grid-container">
-          <p style="text-align:center;grid-column: 1/-1;color:var(--text-muted);">Cargando fotos de la galerÃ­a...</p>
+          <p style="text-align:center;grid-column: 1/-1;color:var(--text-muted);">Cargando fotos de la galería...</p>
         </div>
       </div>
     </div>
@@ -609,18 +609,18 @@
           
           <div class="grid-2">
             <div class="form-group">
-              <label for="proj-id">ID / Slug Ãšnico (Ej: sahagun-cordoba)</label>
+              <label for="proj-id">ID / Slug Único (Ej: sahagun-cordoba)</label>
               <input type="text" id="proj-id" class="form-control" required>
             </div>
             <div class="form-group">
-              <label for="proj-title">TÃ­tulo del Proyecto</label>
+              <label for="proj-title">Título del Proyecto</label>
               <input type="text" id="proj-title" class="form-control" required>
             </div>
           </div>
 
           <div class="grid-2">
             <div class="form-group">
-              <label for="proj-location">UbicaciÃ³n (Ej: SahagÃºn, CÃ³rdoba)</label>
+              <label for="proj-location">Ubicación (Ej: Sahagún, Córdoba)</label>
               <input type="text" id="proj-location" class="form-control" required>
             </div>
             <div class="form-group">
@@ -635,7 +635,7 @@
               <input type="text" id="proj-service" class="form-control" placeholder="Ej: Montaje de Subestaciones" required>
             </div>
             <div class="form-group">
-              <label for="proj-voltage">Nivel de TensiÃ³n</label>
+              <label for="proj-voltage">Nivel de Tensión</label>
               <input type="text" id="proj-voltage" class="form-control" placeholder="Ej: 500 kV" required>
             </div>
           </div>
@@ -653,9 +653,9 @@
             </div>
           </div>
 
-          <!-- GalerÃ­a Multimedia del Proyecto -->
+          <!-- Galería Multimedia del Proyecto -->
           <div class="form-group" style="border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; margin-bottom: 20px; background-color: #fafafa;">
-            <label style="font-weight: 600; margin-bottom: 15px; display: block; color: var(--text-dark);">GalerÃ­a del Proyecto (ImÃ¡genes y Videos)</label>
+            <label style="font-weight: 600; margin-bottom: 15px; display: block; color: var(--text-dark);">Galería del Proyecto (Imágenes y Videos)</label>
             
             <!-- Grid de miniaturas -->
             <div id="proj-gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 15px; margin-bottom: 20px;">
@@ -666,13 +666,13 @@
             <div style="display: flex; gap: 10px;">
               <button type="button" class="btn-action" style="flex: 1; border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; cursor: pointer;" onclick="document.getElementById('proj-add-img-input').click()">
                 <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
-                AÃ±adir Imagen
+                Añadir Imagen
               </button>
               <input type="file" id="proj-add-img-input" accept="image/*" style="display: none;" onchange="handleProjectGalleryUpload(this, 'image')">
 
               <button type="button" class="btn-action" style="flex: 1; border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; cursor: pointer;" onclick="document.getElementById('proj-add-video-input').click()">
                 <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" /></svg>
-                AÃ±adir Video
+                Añadir Video
               </button>
               <input type="file" id="proj-add-video-input" accept="video/*" style="display: none;" onchange="handleProjectGalleryUpload(this, 'video')">
             </div>
@@ -681,7 +681,7 @@
           </div>
 
           <div class="form-group">
-            <label for="proj-description">DescripciÃ³n Detallada</label>
+            <label for="proj-description">Descripción Detallada</label>
             <textarea id="proj-description" class="form-control" rows="4" required></textarea>
           </div>
 
@@ -694,17 +694,17 @@
     </div>
   </div>
 
-  <!-- MODAL SUBIR A GALERÃA -->
+  <!-- MODAL SUBIR A GALERÍA -->
   <div id="gallery-modal" class="modal">
     <div class="modal-content" style="max-width: 500px;">
       <div class="modal-header">
-        <h3 class="modal-title">Subir Imagen a GalerÃ­a</h3>
+        <h3 class="modal-title">Subir Imagen a Galería</h3>
         <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
       </div>
       <form id="gallery-form">
         <div class="modal-body">
           <div class="form-group">
-            <label for="gal-alt">Texto Alternativo / DescripciÃ³n corta</label>
+            <label for="gal-alt">Texto Alternativo / Descripción corta</label>
             <input type="text" id="gal-alt" class="form-control" placeholder="Ej: Montaje de transformador" required>
           </div>
 
